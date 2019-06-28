@@ -1,11 +1,11 @@
 package com.example.conductor.api.cadastroClientes.model;
 
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -15,13 +15,14 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Campo nome é obrigatório")
+    @NotBlank(message = "Campo nome é obrigatório")
+    @Size(min = 3, max = 20, message = "O nome do usuário deve ter entre 3 e 20 caracteres")
     private String nome;
 
-    @NotEmpty(message = "Campo email é obrigatório")
+    @NotBlank(message = "Campo email é obrigatório")
     private String email;
 
-    @NotEmpty(message = "Campo senha é obrigatório")
+    @NotBlank(message = "Campo senha é obrigatório")
     private String senha;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

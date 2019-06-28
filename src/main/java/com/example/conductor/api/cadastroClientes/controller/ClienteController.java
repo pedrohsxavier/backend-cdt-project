@@ -1,6 +1,6 @@
 package com.example.conductor.api.cadastroClientes.controller;
 
-import com.example.conductor.api.cadastroClientes.Exception.ClienteNotFoundException;
+import com.example.conductor.api.cadastroClientes.exception.ClienteException;
 import com.example.conductor.api.cadastroClientes.model.Cliente;
 import com.example.conductor.api.cadastroClientes.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +30,14 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public Cliente getCliente(@PathVariable(value = "id") Long id) throws ClienteNotFoundException {
-        return dao.findById(id).orElseThrow(() -> new ClienteNotFoundException());
+    public Cliente getCliente(@PathVariable(value = "id") Long id) throws ClienteException {
+        return dao.findById(id).orElseThrow(() -> new ClienteException());
     }
 
     @PutMapping("/{id}")
     public Cliente update(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente)
-            throws ClienteNotFoundException{
-        Cliente c = dao.findById(id).orElseThrow(() -> new ClienteNotFoundException());
+            throws ClienteException {
+        Cliente c = dao.findById(id).orElseThrow(() -> new ClienteException());
         c.setNome(cliente.getNome());
         c.setDataNascimento(cliente.getDataNascimento());
         c.setEmail(cliente.getEmail());
