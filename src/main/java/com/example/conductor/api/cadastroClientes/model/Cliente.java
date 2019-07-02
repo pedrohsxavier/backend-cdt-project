@@ -3,6 +3,7 @@ package com.example.conductor.api.cadastroClientes.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class Cliente {
     private String nome;
 
     @NotBlank(message = "Campo email é obrigatório")
+    @Email
     private String email;
 
     @NotBlank(message = "Campo senha é obrigatório")
