@@ -13,11 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class Security extends WebSecurityConfigurerAdapter {
-    private static final String[] MATCHERS = {
-            "/login/**",
-            "/logoff/**",
-            "/cliente/**",
-    };
 
     @Bean
     @Override

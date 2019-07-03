@@ -4,6 +4,7 @@ import com.example.conductor.api.cadastroClientes.exception.ClienteException;
 import com.example.conductor.api.cadastroClientes.model.Cliente;
 import com.example.conductor.api.cadastroClientes.repository.ClienteRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,8 +17,21 @@ public class ClienteController {
 
     private final ClienteRepository dao;
 
-    public ClienteController(ClienteRepository dao) {
+    private final BCryptPasswordEncoder passEncoder;
+
+    public ClienteController(ClienteRepository dao, BCryptPasswordEncoder passEncoder) {
         this.dao = dao;
+        this.passEncoder = passEncoder;
+    }
+
+    @PostMapping("cliente/login")
+    public ResponseEntity<Cliente> login(@RequestBody String email, String senha){
+       Cliente cliente = dao.findByEmail(email);
+       if(cliente == null){
+           return ResponseEntity.notFound().build();
+       }
+
+       return ResponseEntity.ok(cliente);
     }
 
     @GetMapping("/cliente")
@@ -27,6 +41,9 @@ public class ClienteController {
 
     @PostMapping("/cliente")
     public ResponseEntity<Cliente> create(@RequestBody @Valid Cliente cliente){
+        String password = cliente.getSenha();
+        String crypt = passEncoder.encode(password);
+        cliente.setSenha(crypt);
         return ResponseEntity.ok(dao.save(cliente));
     }
 
