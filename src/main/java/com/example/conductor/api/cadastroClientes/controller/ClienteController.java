@@ -3,48 +3,64 @@ package com.example.conductor.api.cadastroClientes.controller;
 import com.example.conductor.api.cadastroClientes.exception.ClienteException;
 import com.example.conductor.api.cadastroClientes.model.Cliente;
 import com.example.conductor.api.cadastroClientes.repository.ClienteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api")
 public class ClienteController {
-    @Autowired
-    private ClienteRepository dao;
 
-    @GetMapping("/list")
-    public List<Cliente> listAll(){
-        return dao.findAll();
+    private final ClienteRepository dao;
+
+    public ClienteController(ClienteRepository dao) {
+        this.dao = dao;
     }
 
-    @PostMapping("/create")
-    public Cliente create(@RequestBody Cliente cliente){
-        return dao.save(cliente);
+    @GetMapping("/cliente")
+    public ResponseEntity<List<Cliente>> listAll(){
+        return ResponseEntity.ok(dao.findAll());
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") Long id){
-        dao.deleteById(id);
+    @PostMapping("/cliente")
+    public ResponseEntity<Cliente> create(@RequestBody @Valid Cliente cliente){
+        return ResponseEntity.ok(dao.save(cliente));
     }
 
-    @GetMapping("/{id}")
-    public Cliente getCliente(@PathVariable(value = "id") Long id) throws ClienteException {
-        return dao.findById(id).orElseThrow(() -> new ClienteException());
+    @DeleteMapping("/cliente/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        try {
+            dao.deleteById(id);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public Cliente update(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente)
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<Cliente> getCliente(@PathVariable(value = "id") Long id) throws ClienteException {
+        Optional<Cliente> cliente = dao.findById(id);
+        if (!cliente.isPresent())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(cliente.get());
+    }
+
+    @PutMapping("/cliente/{id}")
+    public ResponseEntity<Cliente> update(@PathVariable(value = "id") Long id, @RequestBody Cliente cliente)
             throws ClienteException {
-        Cliente c = dao.findById(id).orElseThrow(() -> new ClienteException());
+        Cliente c = dao.findById(id).get();
+        if(c == null)
+            return ResponseEntity.notFound().build();
         c.setNome(cliente.getNome());
         c.setDataNascimento(cliente.getDataNascimento());
         c.setEmail(cliente.getEmail());
         c.setTelefone(cliente.getTelefone());
         c.setSenha(cliente.getSenha());
         c.setEndereco(cliente.getEndereco());
-        return dao.save(c);
+        return ResponseEntity.ok(dao.save(c));
     }
 
 }

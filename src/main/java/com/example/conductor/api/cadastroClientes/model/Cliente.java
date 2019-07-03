@@ -12,6 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "tb_cliente", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +22,8 @@ public class Cliente {
     private String nome;
 
     @NotBlank(message = "Campo email é obrigatório")
-    @Email
+    @Email(message = "Não é um email válido")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @NotBlank(message = "Campo senha é obrigatório")
