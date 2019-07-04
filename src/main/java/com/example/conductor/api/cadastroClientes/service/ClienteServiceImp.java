@@ -19,8 +19,16 @@ public class ClienteServiceImp implements ClienteService {
     }
 
     @Override
+    public Cliente listarId(int id) {
+        return repository.findOne(id);
+    }
+
+    @Override
     public Cliente adicionar(Cliente c) {
         return repository.save(c);
     }
+
+    @Override
+    public Cliente editar(Cliente c) { return repository.save(c); }
 
 }

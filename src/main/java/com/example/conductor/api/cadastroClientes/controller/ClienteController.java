@@ -92,7 +92,16 @@ public class ClienteController {
     }
 
     @PostMapping
-    public Cliente adicionar(@RequestBody Cliente c) {
-        return  service.adicionar(c);
+    public Cliente adicionar(@RequestBody Cliente c) { return service.adicionar(c); }
+
+    @GetMapping(path = {"/{id}"})
+    public Cliente listarId(@PathVariable("id") int id) {
+        return service.listarId(id);
+    }
+
+    @PutMapping(path = {"/{id}"})
+    public Cliente editar(@RequestBody Cliente c, @PathVariable("id") long id) {
+        c.setId(id);
+        return service.editar(c);
     }
 }

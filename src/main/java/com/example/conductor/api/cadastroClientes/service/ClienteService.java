@@ -7,9 +7,9 @@ import java.util.List;
 public interface ClienteService {
 
     List<Cliente> listar();
-//    Cliente listarId(int id);
+    Cliente listarId(int id);
     Cliente adicionar(Cliente c);
-//    Cliente editar(Cliente c);
+    Cliente editar(Cliente c);
 //    Cliente deletar(int id);
 
 }
