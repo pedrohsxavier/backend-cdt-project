@@ -3,6 +3,8 @@ package com.example.conductor.api.cadastroClientes.controller;
 import com.example.conductor.api.cadastroClientes.exception.ClienteException;
 import com.example.conductor.api.cadastroClientes.model.Cliente;
 import com.example.conductor.api.cadastroClientes.repository.ClienteRepository;
+import com.example.conductor.api.cadastroClientes.service.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,13 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class ClienteController {
+
+    @Autowired
+    private ClienteService service;
 
     private final ClienteRepository dao;
 
@@ -80,4 +86,13 @@ public class ClienteController {
         return ResponseEntity.ok(dao.save(c));
     }
 
+    @GetMapping
+    public List<Cliente> listar() {
+        return service.listar();
+    }
+
+    @PostMapping
+    public Cliente adicionar(@RequestBody Cliente c) {
+        return  service.adicionar(c);
+    }
 }
