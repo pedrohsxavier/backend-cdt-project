@@ -20,7 +20,7 @@ public class ClienteServiceImp implements ClienteService {
 
     @Override
     public Cliente listarId(int id) {
-        return repository.findOne(id);
+        return repository.findById(id);
     }
 
     @Override
@@ -30,5 +30,14 @@ public class ClienteServiceImp implements ClienteService {
 
     @Override
     public Cliente editar(Cliente c) { return repository.save(c); }
+
+    @Override
+    public Cliente deletar(int id) {
+        Cliente c = repository.findById(id);
+        if (c != null) {
+            repository.delete(c);
+        }
+        return c;
+    }
 
 }

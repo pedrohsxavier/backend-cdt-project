@@ -104,4 +104,9 @@ public class ClienteController {
         c.setId(id);
         return service.editar(c);
     }
+
+    @DeleteMapping
+    public Cliente delete(@PathVariable("id") int id) {
+        return service.deletar(id);
+    }
 }

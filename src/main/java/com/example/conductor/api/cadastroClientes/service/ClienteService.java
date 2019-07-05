@@ -10,6 +10,6 @@ public interface ClienteService {
     Cliente listarId(int id);
     Cliente adicionar(Cliente c);
     Cliente editar(Cliente c);
-//    Cliente deletar(int id);
+    Cliente deletar(int id);
 
 }
